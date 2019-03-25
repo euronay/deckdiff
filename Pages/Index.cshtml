@@ -1,0 +1,28 @@
+﻿@page "/"
+@inject ScryfallApiClient scryfallApi
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@if (card == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <img src='@card.ImageUris["normal"]' style="max-width: 320px;" />
+}
+
+
+@functions {
+    
+    Card card;
+
+    protected override async Task OnInitAsync()
+    {
+        card = await scryfallApi.Cards.GetRandom();
+    }
+}
