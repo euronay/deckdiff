@@ -21,13 +21,12 @@ namespace deckdiff
 
             services.AddScoped<IMemoryCache>(service => new MemoryCache(new MemoryCacheOptions()));
 
-            services.AddScoped<ScryfallApiClient>(service => {
-                var uriHelper = service.GetRequiredService<IUriHelper>();
+
+            services.AddSingleton<ScryfallApiClient>(service => {
                 var httpClient = service.GetRequiredService<HttpClient>();
                 var logger = service.GetRequiredService<ILogger<ScryfallApiClient>>();
                 var cache = service.GetRequiredService<IMemoryCache>();
                 httpClient.BaseAddress = new Uri("https://api.scryfall.com/");
-                
                 return new ScryfallApiClient(httpClient, logger,  cache);
             });
         }

@@ -1,0 +1,51 @@
+@page "/deck"
+@inject ILogger<Deck> logger;
+@inject ScryfallApiClient scryfallApi
+
+
+<h1>Deck builder</h1>
+
+<p>Current card:<br />
+@if (CurrentCard == null)
+{
+    <em>None</em>
+}
+else
+{
+    <img src='@CurrentCard.ImageUris["normal"]' style="max-width: 320px;" />
+}
+</p>
+
+<p>
+    <input type="text" bind="@SearchQuery" />
+    <button class="btn btn-primary" onclick="@Search">Search</button>
+</p>
+
+@functions {
+
+    private Card CurrentCard { get; set; }
+    private string SearchQuery {get; set; } 
+
+    protected override async Task OnInitAsync()
+    {
+        //CurrentCard = await scryfallApi.Cards.GetRandom();
+    }
+
+    private async void Search()
+    {
+        CurrentCard = null;
+
+        var options = new SearchOptions
+        {
+            Sort = SearchOptions.CardSort.Cmc,
+            Direction = SearchOptions.SortDirection.Desc
+        };
+
+        var results = await scryfallApi.Cards.Search(SearchQuery, 1, options);
+        logger.LogDebug($"Results count {results?.Data.Count()}");
+        CurrentCard = results?.Data.First();
+
+        //https://github.com/aspnet/Blazor/issues/402
+        StateHasChanged();
+    }
+}
