@@ -23,9 +23,9 @@ namespace deckdiff
 
 
             services.AddSingleton<ScryfallApiClient>(service => {
-                var httpClient = service.GetRequiredService<HttpClient>();
                 var logger = service.GetRequiredService<ILogger<ScryfallApiClient>>();
                 var cache = service.GetRequiredService<IMemoryCache>();
+                var httpClient = new HttpClient();
                 httpClient.BaseAddress = new Uri("https://api.scryfall.com/");
                 return new ScryfallApiClient(httpClient, logger,  cache);
             });
