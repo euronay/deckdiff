@@ -16,6 +16,30 @@ else
 }
 </p>
 
+<h2>Search</h2>
+@if(SearchResults != null)
+{
+    <table>
+        <thead>
+            <td></td>
+            <td>Name</td>
+            <td></td>
+        </thead>
+        @foreach(Card card in SearchResults)
+        {
+            <tr>
+                <td><img src='@card.ImageUris["small"]' /></td>
+                <td>@card.Name</td>
+                <td>
+                    <button class="btn btn-primary" onclick="@(() => Choose(card))">Select</button>
+                </td>
+            </tr>
+
+        }
+</table>
+}
+
+
 <p>
     <input type="text" bind="@SearchQuery" />
     <button class="btn btn-primary" onclick="@Search">Search</button>
@@ -25,27 +49,37 @@ else
 
     private Card CurrentCard { get; set; }
     private string SearchQuery {get; set; } 
+    private IEnumerable<Card> SearchResults {get; set;}
 
-    protected override async Task OnInitAsync()
-    {
-        //CurrentCard = await scryfallApi.Cards.GetRandom();
-    }
+    //protected override async Task OnInitAsync()
+    //{
+    //    CurrentCard = await scryfallApi.Cards.GetRandom();
+    //} 
 
     private async void Search()
     {
-        CurrentCard = null;
+        //CurrentCard = null;
+        SearchResults = null;
 
         var options = new SearchOptions
         {
             Sort = SearchOptions.CardSort.Cmc,
-            Direction = SearchOptions.SortDirection.Desc
+            Direction = SearchOptions.SortDirection.Desc,
+            Mode = SearchOptions.RollupMode.Prints
         };
 
         var results = await scryfallApi.Cards.Search(SearchQuery, 1, options);
         logger.LogDebug($"Results count {results?.Data.Count()}");
-        CurrentCard = results?.Data.First();
+        //CurrentCard = results?.Data.First();
+        SearchResults = results?.Data;
 
         //https://github.com/aspnet/Blazor/issues/402
+        StateHasChanged();
+    }
+
+    private void Choose(Card card)
+    {
+        CurrentCard = card;
         StateHasChanged();
     }
 }
