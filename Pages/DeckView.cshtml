@@ -5,19 +5,15 @@
 
 <h1>Deck builder</h1>
 
-<p>Current card:<br />
-@if (CurrentCard == null)
+@foreach (var cardEntry in _deck.Main)
 {
-    <em>None</em>
+    <img src='@cardEntry.Card.ImageUris["normal"]' style="max-width: 320px;" />
 }
-else
-{
-    <img src='@CurrentCard.ImageUris["normal"]' style="max-width: 320px;" />
-}
-</p>
+
+
 
 <h2>Search</h2>
-@if(SearchResults != null)
+@if(_searchResults != null)
 {
     <table>
         <thead>
@@ -25,7 +21,7 @@ else
             <td>Name</td>
             <td></td>
         </thead>
-        @foreach(Card card in SearchResults)
+        @foreach(var card in _searchResults)
         {
             <tr>
                 <td><img src='@card.ImageUris["small"]' /></td>
@@ -41,25 +37,25 @@ else
 
 
 <p>
-    <input type="text" bind="@SearchQuery" />
+    <input type="text" bind="@_searchQuery" />
     <button class="btn btn-primary" onclick="@Search">Search</button>
 </p>
 
 @functions {
 
-    private Card CurrentCard { get; set; }
-    private string SearchQuery {get; set; } 
-    private IEnumerable<Card> SearchResults {get; set;}
+    private deckdiff.Model.Deck _deck { get; set; }
+    private string _searchQuery {get; set; } 
+    private IEnumerable<Card> _searchResults {get; set;}
 
-    //protected override async Task OnInitAsync()
-    //{
-    //    CurrentCard = await scryfallApi.Cards.GetRandom();
-    //} 
+    protected override async Task OnInitAsync()
+    {
+        _deck = new Deck();
+    } 
 
     private async void Search()
     {
         //CurrentCard = null;
-        SearchResults = null;
+        _searchResults = null;
 
         var options = new SearchOptions
         {
@@ -68,10 +64,10 @@ else
             Mode = SearchOptions.RollupMode.Prints
         };
 
-        var results = await scryfallApi.Cards.Search(SearchQuery, 1, options);
+        var results = await scryfallApi.Cards.Search(_searchQuery, 1, options);
         logger.LogDebug($"Results count {results?.Data.Count()}");
         //CurrentCard = results?.Data.First();
-        SearchResults = results?.Data;
+        _searchResults = results?.Data;
 
         //https://github.com/aspnet/Blazor/issues/402
         StateHasChanged();
@@ -79,7 +75,7 @@ else
 
     private void Choose(Card card)
     {
-        CurrentCard = card;
+        _deck.Main.Add((1, card));
         StateHasChanged();
     }
 }
