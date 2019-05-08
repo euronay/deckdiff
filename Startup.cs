@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using Blazor.Extensions.Logging;
+using Blazor.Extensions.Storage;
 using Microsoft.AspNetCore.Blazor.Builder;
 using Microsoft.AspNetCore.Blazor.Services;
 using Microsoft.Extensions.Caching.Memory;
@@ -18,6 +19,8 @@ namespace deckdiff
                     .AddBrowserConsole() 
                     .SetMinimumLevel(LogLevel.Trace)
                 );
+
+            services.AddStorage();
 
             services.AddScoped<IMemoryCache>(service => new MemoryCache(new MemoryCacheOptions()));
 

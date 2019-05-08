@@ -1,15 +1,20 @@
-@page "/deck"
-@inject ILogger<Deck> logger;
+@page "/deck/{DeckId}"
+@inject ILogger<DeckView> logger
 @inject ScryfallApiClient scryfallApi
+@inject LocalStorage storage
 
 
 <h1>Deck builder</h1>
-
-@foreach (var cardEntry in _deck.Main)
+@if(_deck != null)
 {
-    <img src='@cardEntry.Card.ImageUris["normal"]' style="max-width: 320px;" />
-}
+    @foreach (var cardEntry in _deck.Main)
+    {
+        <p>@cardEntry.Count  @cardEntry.Card.Name</p>
+        <img src='@cardEntry.Card.ImageUris["small"]'/><br />
+    }
 
+    <button class="btn btn-primary" onclick=@Save>Save</button>
+}
 
 
 <h2>Search</h2>
@@ -43,14 +48,44 @@
 
 @functions {
 
+    [Parameter]
+    private string DeckId { get; set; }
+
     private deckdiff.Model.Deck _deck { get; set; }
     private string _searchQuery {get; set; } 
     private IEnumerable<Card> _searchResults {get; set;}
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        _deck = new Deck();
+        logger.LogDebug($"Deck ID: {DeckId}");
+        if(string.IsNullOrEmpty(DeckId))
+        {
+            return;
+        }
+        logger.LogDebug("Loading from storage");
+        var deckData = await storage.GetItem<string>(DeckId);
+        if(string.IsNullOrEmpty(deckData))
+        {
+            logger.LogDebug("Not found in storage");
+            _deck = new Deck()
+            {
+                Id = DeckId
+            };
+        }
+        else
+        {
+            logger.LogDebug(deckData);
+            _deck = JsonConvert.DeserializeObject<Deck>(deckData);
+        }
+
+
+        StateHasChanged();
     } 
+
+    private async void Save()
+    {
+        await storage.SetItem<string>(DeckId, JsonConvert.SerializeObject(_deck));
+    }
 
     private async void Search()
     {
@@ -75,7 +110,10 @@
 
     private void Choose(Card card)
     {
-        _deck.Main.Add((1, card));
+        _deck.Main.Add(new CardInfo(){
+            Count = 1, 
+            Card = card
+            });
         StateHasChanged();
     }
 }
