@@ -121,3 +121,25 @@ app {
         display: block;
     }
 }
+
+
+
+.deck .card-image {
+    border-radius: 6%/4%;
+    width: 14em;
+    margin-top: -17.5em;
+    transition: margin 700ms;
+}
+
+.deck .card-image:hover {
+    margin-top: 0;
+}
+
+.deck .card-image:first-child {
+    margin-top: 0 !important;
+}
+
+.searchresult-row {
+    display: block;
+    cursor: pointer;
+}

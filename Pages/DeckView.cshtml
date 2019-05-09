@@ -5,46 +5,31 @@
 
 
 <h1>Deck builder</h1>
-@if(_deck != null)
-{
-    @foreach (var cardEntry in _deck.Main)
-    {
-        <p>@cardEntry.Count  @cardEntry.Card.Name</p>
-        <img src='@cardEntry.Card.ImageUris["small"]'/><br />
-    }
-
-    <button class="btn btn-primary" onclick=@Save>Save</button>
-}
-
-
-<h2>Search</h2>
-@if(_searchResults != null)
-{
-    <table>
-        <thead>
-            <td></td>
-            <td>Name</td>
-            <td></td>
-        </thead>
-        @foreach(var card in _searchResults)
+<div class="row">
+    <div class="col">
+        @if(_deck != null)
         {
-            <tr>
-                <td><img src='@card.ImageUris["small"]' /></td>
-                <td>@card.Name</td>
-                <td>
-                    <button class="btn btn-primary" onclick="@(() => Choose(card))">Select</button>
-                </td>
-            </tr>
+            <div class="deck">
+                @foreach (var cardEntry in _deck.Main)
+                {
+                    <img class="card-image" src='@cardEntry.Card.ImageUris["normal"]'/><br />
+                }
+            </div>
 
+            <button class="btn btn-primary" onclick=@Save>Save</button>
         }
-</table>
-}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+          <div class="card bg-light">
+                <div class="card-body">
+                    <CardSearch AddCard=@Choose />
+                </div>
+          </div>       
+    </div>
+</div>
 
-
-<p>
-    <input type="text" bind="@_searchQuery" />
-    <button class="btn btn-primary" onclick="@Search">Search</button>
-</p>
 
 @functions {
 
@@ -85,27 +70,6 @@
     private async void Save()
     {
         await storage.SetItem<string>(DeckId, JsonConvert.SerializeObject(_deck));
-    }
-
-    private async void Search()
-    {
-        //CurrentCard = null;
-        _searchResults = null;
-
-        var options = new SearchOptions
-        {
-            Sort = SearchOptions.CardSort.Cmc,
-            Direction = SearchOptions.SortDirection.Desc,
-            Mode = SearchOptions.RollupMode.Prints
-        };
-
-        var results = await scryfallApi.Cards.Search(_searchQuery, 1, options);
-        logger.LogDebug($"Results count {results?.Data.Count()}");
-        //CurrentCard = results?.Data.First();
-        _searchResults = results?.Data;
-
-        //https://github.com/aspnet/Blazor/issues/402
-        StateHasChanged();
     }
 
     private void Choose(Card card)
