@@ -3,23 +3,27 @@
 @inject ScryfallApiClient scryfallApi
 @inject LocalStorage storage
 
+@if(Deck == null)
+{
+    <h1>Deck builder</h1>
+}
+else
+{
+    <h1>@Deck.Id</h1>
+    <div class="row">
+        <div class="col">
+            
+                <div class="deck">
+                    @foreach (var cardEntry in Deck.Main)
+                    {
+                        <br /><img class="card-image" src='@cardEntry.Card.ImageUris["normal"]'/>
+                    }
+                </div>
 
-<h1>Deck builder</h1>
-<div class="row">
-    <div class="col">
-        @if(_deck != null)
-        {
-            <div class="deck">
-                @foreach (var cardEntry in _deck.Main)
-                {
-                    <img class="card-image" src='@cardEntry.Card.ImageUris["normal"]'/><br />
-                }
-            </div>
-
-            <button class="btn btn-primary" onclick=@Save>Save</button>
-        }
+                <button class="btn btn-primary" onclick=@Save>Save</button>
+        </div>
     </div>
-</div>
+}
 <div class="row">
     <div class="col">
           <div class="card bg-light">
@@ -36,9 +40,7 @@
     [Parameter]
     private string DeckId { get; set; }
 
-    private deckdiff.Model.Deck _deck { get; set; }
-    private string _searchQuery {get; set; } 
-    private IEnumerable<Card> _searchResults {get; set;}
+    private Deck Deck { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -52,7 +54,7 @@
         if(string.IsNullOrEmpty(deckData))
         {
             logger.LogDebug("Not found in storage");
-            _deck = new Deck()
+            Deck = new Deck()
             {
                 Id = DeckId
             };
@@ -60,7 +62,7 @@
         else
         {
             logger.LogDebug(deckData);
-            _deck = JsonConvert.DeserializeObject<Deck>(deckData);
+            Deck = JsonConvert.DeserializeObject<Deck>(deckData);
         }
 
 
@@ -69,12 +71,12 @@
 
     private async void Save()
     {
-        await storage.SetItem<string>(DeckId, JsonConvert.SerializeObject(_deck));
+        await storage.SetItem<string>(DeckId, JsonConvert.SerializeObject(Deck));
     }
 
     private void Choose(Card card)
     {
-        _deck.Main.Add(new CardInfo(){
+        Deck.Main.Add(new CardInfo(){
             Count = 1, 
             Card = card
             });

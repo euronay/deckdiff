@@ -133,7 +133,7 @@ app {
     transition: margin 500ms;
 }
 
-.deck .card-image:hover {
+.deck .card-image:not(:last-child):hover {
     margin-bottom: 1em !important;
 }
 

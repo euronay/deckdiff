@@ -1,0 +1,42 @@
+@page "/decks"
+@using System.Collections.Generic
+@inject ILogger<DeckList> _logger
+@inject LocalStorage _storage
+
+@if (Decks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-hover">
+        <tbody>
+            @foreach (var deck in Decks)
+            {
+                <tr>
+                    <td><a class="searchresult-row" href=@($"deck/{deck.Id}")>@deck.Id</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@functions {
+    IEnumerable<Deck> Decks;
+
+    protected override async Task OnInitAsync()
+    {
+        var decks = new List<Deck>();
+        
+        for(var i=0; i< await _storage.Length(); i++)
+        {
+            var key = await _storage.Key(i);
+            _logger.LogDebug($"Found {key} in storage");
+            var deckData = await _storage.GetItem<string>(key);
+            var deck = JsonConvert.DeserializeObject<Deck>(deckData);
+            decks.Add(deck);
+        }
+
+        Decks = decks;
+    }
+}
