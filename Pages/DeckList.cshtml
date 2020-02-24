@@ -1,4 +1,5 @@
 @page "/decks"
+@using System
 @using System.Collections.Generic
 @inject ILogger<DeckList> _logger
 @inject LocalStorage _storage
@@ -14,11 +15,13 @@ else
             @foreach (var deck in Decks)
             {
                 <tr>
-                    <td><a class="searchresult-row" href=@($"deck/{deck.Id}")>@deck.Id</a></td>
+                    <td><a class="searchresult-row" href=@($"deck/{deck.Id}")>@deck.Name</a></td>
                 </tr>
             }
         </tbody>
     </table>
+
+    <a class="btn btn-primary" href=@($"deck/{Guid.NewGuid()}")>New</a>
 }
 
 @functions {

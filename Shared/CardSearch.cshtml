@@ -14,7 +14,7 @@
         {
             <table class="table table-hover">
                 <tbody>
-                    @foreach(var card in SearchResults)
+                    @foreach(var card in SearchResults.OrderBy(c => c.Name))
                     {
                         <tr>
                             <td><a class="searchresult-row" onclick="@(() => Select(card))">@card.Name</a></td>
@@ -39,7 +39,7 @@
                             <img class="card-image" src='@SelectedCard.ImageUris["small"]'/><br />
                         </div>
                         <div class="col-md-6">
-                            
+
                                 <label for="printingSelect">Set</label>
                                 <div class="input-group">
                                     <select class="custom-select" id="printingSelect"></select>
@@ -68,7 +68,7 @@
                                     </div>
                                 </div>
                                     
-                                <button type="button" class="btn btn-primary" onclick=@(() => AddCard(SelectedCard))>Add</button>
+                                <button type="button" class="btn btn-primary" onclick=@(() => AddCard(SelectedCard, SelectedCardCount))>Add</button>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
     public Card SelectedCard { get; set; }
 
     [Parameter]
-    internal Action<Card> AddCard {get; set;}
+    internal Action<Card, int> AddCard {get; set;}
 
     private async void Search()
     {
@@ -113,7 +113,7 @@
 
         var options = new SearchOptions
         {
-            Sort = SearchOptions.CardSort.Cmc,
+            Sort = SearchOptions.CardSort.Name,
             Direction = SearchOptions.SortDirection.Desc
         };
 

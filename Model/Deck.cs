@@ -1,4 +1,4 @@
-using System;
+using ScryfallApi.Client.Models;
 using System.Collections.Generic;
 
 namespace deckdiff.Model
@@ -9,7 +9,7 @@ namespace deckdiff.Model
         public string Name { get; set; }
         public Format Format { get; set; }
         public string Notes { get; set; }
-        public IList<CardInfo> Main { get; set; } = new List<CardInfo>();
-        public IList<CardInfo> Sideboard { get; set; } = new List<CardInfo>();
+        public List<Card> Main { get; set; } = new List<Card>();
+        public List<Card> Sideboard { get; set; } = new List<Card>();
     }
 }

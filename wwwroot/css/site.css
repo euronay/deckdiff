@@ -128,8 +128,8 @@ app {
 
 .deck .card-image {
     border-radius: 6%/4%;
-    width: 14em;
-    margin-bottom: -17.5em;
+    width: 10em;
+    margin-bottom: -14.5em;
     transition: margin 500ms;
 }
 
