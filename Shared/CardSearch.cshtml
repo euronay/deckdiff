@@ -1,18 +1,16 @@
 @inject ILogger<CardSearch> logger
 @inject ScryfallApiClient scryfallApi
-
-<div class="row">
-    <div class="col-md-4">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search for card" bind="@SearchQuery" />
+<div class="flex flex-wrap">
+    <div class="md:w-1/3 pr-4 pl-4">
+        <div class="relative flex items-stretch w-full mb-3">
+            <input type="text" class="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-grey-darker border border-grey rounded" placeholder="Search for card" bind="@SearchQuery" />
             <div class="input-group-append">
-                <button class="btn btn-outline-primary" type="button" onclick=@Search>Search</button>
+                <button class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap py-2 px-4 rounded text-base leading-normal no-underline text-blue-dark border-blue bg-white hover:bg-blue-light hover:text-blue-darker" type="button" onclick=@Search>Search</button>
             </div>
         </div>
-
         @if(SearchResults != null)
         {
-            <table class="table table-hover">
+            <table class="w-full max-w-full mb-4 bg-transparent table-hover">
                 <tbody>
                     @foreach(var card in SearchResults.OrderBy(c => c.Name))
                     {
@@ -24,51 +22,64 @@
             </table>
         }
     </div>
-    <div class="col-md-8">
+    <div class="md:w-2/3 pr-4 pl-4">
         @if(SelectedCard != null)
         {
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-12">
+                    <div class="flex flex-wrap">
+                        <div class="md:w-1/6 pr-4 pl-42">
                             <h2>@SelectedCard.Name</h2>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-auto">
+                    <div class="flex flex-wrap">
+                        <div class=":flex-growmd-auto">
                             <img class="card-image" src='@SelectedCard.ImageUris["small"]'/><br />
                         </div>
-                        <div class="col-md-6">
-
+                        <div class="md:w-1/2 pr-4 pl-4">
                                 <label for="printingSelect">Set</label>
-                                <div class="input-group">
-                                    <select class="custom-select" id="printingSelect"></select>
-                                </div>
+                                <div class="relative flex items-stretch w-full">
+                                    <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="printingSelect"
+                                            onchange="@(e => SelectPrint(e.Value.ToString()))">
 
-                                <div class="input-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="foilCheck">
-                                        <label class="form-check-label" for="foilCheck">Foil</label>
-                                    </div>
-                                </div>
+                                        @if (SelectedCardPrints != null)
+                                        {
+                                            @foreach (var print in SelectedCardPrints)
+                                            {
+                                                <option value="@print.Id">@print.SetName</option>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <option disabled>Loading...</option>
+                                        }
 
+                                    </select>
+                                </div>
+                                <div class="relative flex items-stretch w-full">
+                                    <label class="md:w-2/3 block text-gray-500 font-bold">
+                                        <input class="mr-2 leading-tight" type="checkbox" value="" id="foilCheck">
+                                        <span class="text-sm">
+                                            Foil
+                                        </span>
+                                    </label>
+                                </div>
                                 <label for="numberInput">Number</label>
-                                <div class="input-group">
+                                <div class="relative flex items-stretch w-full">
                                     <!-- TODO Componetise this -->
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-outline-secondary" onclick=@(() => SelectedCardCount--)>
+                                    <div class="flex -mr-px">
+                                        <button class="flex items-center leading-normal bg-grey-lighter rounded rounded-r-none border border-r-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm" onclick=@(() => SelectedCardCount--)>
                                             <span class="oi oi-minus"></span>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control" id="numberInput" bind=@SelectedCardCount />
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" onclick=@(() => SelectedCardCount++)>
+                                    <input type="text" class="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-grey-light px-3 relative" id="numberInput" bind=@SelectedCardCount />
+                                    <div class="flex -mr-px">
+                                        <button class="flex items-center leading-normal bg-grey-lighter rounded rounded-l-none border border-l-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm" onclick=@(() => SelectedCardCount++)>
                                             <span class="oi oi-plus"></span>
                                         </button>
                                     </div>
                                 </div>
-                                    
-                                <button type="button" class="btn btn-primary" onclick=@(() => AddCard(SelectedCard, SelectedCardCount))>Add</button>
+                                <button type="button" class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap py-2 px-4 rounded text-base leading-normal no-underline text-blue-lightest bg-blue hover:bg-blue-light" onclick=@(() => AddCard(SelectedCard, SelectedCardCount))>Add</button>
                         </div>
                     </div>
                 </div>
@@ -83,9 +94,11 @@
 
 @functions {
 
-    private string SearchQuery {get; set; } 
+    private string SearchQuery {get; set; }
+
     private int _selectedCardCount = 1;
-    private int SelectedCardCount 
+
+    private int SelectedCardCount
     {
         get => _selectedCardCount;
         set
@@ -93,16 +106,19 @@
             _selectedCardCount = (value < 1) ? 1 : value;
             StateHasChanged();
         }
-    }  
+    }
     private IEnumerable<Card> SearchResults {get; set;}
     public Card SelectedCard { get; set; }
+
+    private IEnumerable<Card> SelectedCardPrints { get; set; }
 
     [Parameter]
     internal Action<Card, int> AddCard {get; set;}
 
-    private async void Search()
+    private async Task Search()
     {
         SelectedCard = null;
+        SelectedCardPrints = null;
         SearchResults = null;
 
         if(String.IsNullOrEmpty(SearchQuery))
@@ -122,13 +138,38 @@
         //CurrentCard = results?.Data.First();
         SearchResults = results?.Data;
 
+        if(SearchResults.Count() == 1)
+        {
+            await Select(SearchResults.First());
+        }
+
         StateHasChanged();
     }
 
-    private void Select(Card card)
+    private async Task Select(Card card)
     {
         SelectedCard = card;
+
+        var options = new SearchOptions
+        {
+            Sort = SearchOptions.CardSort.Released,
+            Direction = SearchOptions.SortDirection.Desc,
+            Mode = SearchOptions.RollupMode.Prints
+        };
+
+        // Hack to get oracle id from reprints uri
+        var queryString = card.PrintsSearchUri.ToString().Split('?')[1];
+        var queryParams = System.Web.HttpUtility.ParseQueryString(queryString);
+        var oracleId = queryParams["q"];
+
+        var reprints =  await scryfallApi.Cards.Search(oracleId, 1, options);
+        SelectedCardPrints = reprints?.Data;
         StateHasChanged();
     }
 
+    private void SelectPrint(String cardId)
+    {
+        SelectedCard = SelectedCardPrints.First(c => c.Id == new Guid(cardId));
+        StateHasChanged();
+    }
 }

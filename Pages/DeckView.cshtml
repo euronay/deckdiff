@@ -10,8 +10,8 @@
 else
 {
     <h1><input type="text" bind="@Deck.Name" /></h1>
-    <div class="row">
-        <div class="col">
+    <div class="flex flex-wrap">
+        <div class="flex-grow">
             <h5><i class="ms ms-creature" />Creatures</h5>
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Creature")))
@@ -20,7 +20,7 @@ else
                 }
             </div>
         </div>
-        <div class="col">
+        <div class="flex-grow">
             <h5><i class="ms ms-planeswalker" />Planeswalkers</h5>
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Planeswalker")))
@@ -29,7 +29,7 @@ else
                 }
             </div>
         </div>
-        <div class="col">
+        <div class="flex-grow">
             <h5><i class="ms ms-instant" />Instants</h5>
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Instant")))
@@ -38,7 +38,7 @@ else
                 }
             </div>
         </div>
-        <div class="col">
+        <div class="flex-grow">
             <h5><i class="ms ms-sorcery" />Sorceries</h5>
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Sorcery")))
@@ -47,7 +47,7 @@ else
                 }
             </div>
         </div>
-        <div class="col">
+        <div class="flex-grow">
             <h5><i class="ms ms-artifact" />Artifacts</h5>
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Artifact") && !c.TypeLine.Contains("Creature")))
@@ -56,7 +56,7 @@ else
                 }
             </div>
         </div>
-        <div class="col">
+        <div class="flex-grow">
             <h5><i class="ms ms-enchantment" />Enchantments</h5>
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Enchantment") && !c.TypeLine.Contains("Creature")))
@@ -65,7 +65,7 @@ else
                 }
             </div>
         </div>
-        <div class="col">
+        <div class="flex-grow">
             <h5><i class="ms ms-land" />Lands</h5>
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Land") && !c.TypeLine.Contains("Creature")))
@@ -75,12 +75,12 @@ else
             </div>
         </div>
     </div>
-    <button class="btn btn-primary" onclick=@Save>Save</button>
+    <button class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap py-2 px-4 rounded text-base leading-normal no-underline text-blue-lightest bg-blue hover:bg-blue-light" onclick=@Save>Save</button>
 }
-<div class="row">
-    <div class="col">
-          <div class="card bg-light">
-                <div class="card-body">
+<div class="flex flex-wrap">
+    <div class="flex-grow">
+          <div class="relative flex flex-col min-w-0 rounded break-words border bg-white border-1 border-grey-light bg-grey-lightest">
+                <div class="flex-auto p-6">
                     <CardSearch AddCard=@Choose />
                 </div>
           </div>       
