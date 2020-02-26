@@ -1,0 +1,128 @@
+@page "/playtest/{DeckId}"
+@inject ILogger<DeckView> logger
+@inject LocalStorage storage
+
+@if(Deck == null)
+{
+    <h1>Playtest</h1>
+}
+else
+{
+    <div class="flex flex-col h-screen justify-between">
+        <div class="container flex flex-wrap w-full p-2 bg-purple-700 text-white">
+            <div class="w-1/5">
+                <h1 class="text-2xl">@Deck.Name</h1> 
+            </div>
+            <div class="w-1/5">
+                <span class="w-1/3 p-2 text-right">Turn </span>
+                <span class="w-2/3 p-2 text-2xl">@Turn</span>
+            </div>
+            <div class="flex flex-no-wrap w-1/5">
+                <span class="w-1/3 p-2 text-right">Life </span>
+                <div class="w-2/3">
+                    <NumberTextBox Number="@Life" />
+                </div>
+            </div>
+            <div class="flex flex-no-wrap w-1/5">
+                <span class="w-1/3 p-2 text-right">Opp </span>
+                <div class="w-2/3">
+                    <NumberTextBox Number="@OpponentLife" />
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="container mb-auto flex flex-no-wrap w-full h-full">
+            <div class="w-full flex flex-wrap bg-gray-300">
+                    @foreach (var card in Deck.Main.Take(1))
+                    {
+                        <div class="w-24 my-2 mx-1">
+                            <img class="card-image" src='@card.ImageUris["small"]'/>
+                        </div>
+                    }
+            </div>
+            <div class="w-1/5 p-2">
+                <button class="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full mb-2">Next Turn</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mb-2">Shuffle</button>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mb-2">Mulligan</button>
+            </div>
+        </div>
+
+        <div class="container flex flex-no-wrap w-full">
+            <div class="w-auto overflow-x-scroll">
+                <div class="whitespace-no-wrap">
+                    @foreach (var card in Deck.Main.Take(7))
+                    {
+                        <div class="w-24 my-2 mx-1 inline-block">
+                            <img class="card-image" src='@card.ImageUris["small"]'/>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="w-32">
+                <div class="w-24 my-2 mx-1">
+                    <img class="card-image" src="images/mtg-card-back.jpg"/>
+                </div>
+            </div>
+            <div class="w-32">
+                <div class="w-24 m-2">
+                    <img class="card-image" src="images/mtg-card-back.jpg"/>
+                </div>
+            </div>
+            <div class="w-32">
+                <div class="w-24 m-2">
+                    <img class="card-image" src="images/mtg-card-back.jpg"/>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@functions {
+
+    [Parameter]
+    private string DeckId { get; set; }
+    private Deck Deck { get; set; }
+    private int Turn { get; set; } = 1;
+    private int Life {get; set; } = 20;
+    private int OpponentLife {get; set;} = 20;
+    private int Poison {get; set;} = 0;
+    private int Energy {get; set;} = 0;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        logger.LogDebug($"Deck ID: {DeckId}");
+        if(string.IsNullOrEmpty(DeckId))
+        {
+            return;
+        }
+        logger.LogDebug("Loading from storage");
+        var deckData = await storage.GetItem<string>(DeckId);
+        if(string.IsNullOrEmpty(deckData))
+        {
+            logger.LogDebug("Not found in storage");
+            Deck = new Deck()
+            {
+                Id = DeckId
+            };
+        }
+        else
+        {
+            logger.LogDebug(deckData);
+            Deck = JsonConvert.DeserializeObject<Deck>(deckData);
+        }
+
+
+        StateHasChanged();
+    }
+
+
+
+    private void Choose(Card card)
+    {
+      
+        StateHasChanged();
+    }
+}
