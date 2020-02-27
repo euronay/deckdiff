@@ -1,11 +1,11 @@
 @inherits BlazorLayoutComponent
 
-<div class="sidebar">
-    <NavMenu />
+<div class="h-screen flex">
+    <div class="bg-indigo-900 text-purple-100 flex-none w-64 pb-6 block">
+        <NavMenu />
+    </div>
 </div>
 
-<div class="main">
-    <div class="content">
-        @Body
-    </div>
+<div class="flex-1 flex flex-col bg-white overflow-hidden">
+    @Body
 </div>

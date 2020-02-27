@@ -9,7 +9,7 @@
 else
 {
     <div class="flex flex-col h-screen justify-between">
-        <div class="container flex flex-wrap w-full p-2 bg-purple-700 text-white">
+        <div class="flex flex-wrap w-full p-2 bg-purple-700 text-white">
             <div class="w-1/5">
                 <h1 class="text-2xl">@Deck.Name</h1> 
             </div>
@@ -32,7 +32,7 @@ else
         </div>
         
 
-        <div class="container mb-auto flex flex-no-wrap w-full h-full">
+        <div class="mb-auto flex flex-no-wrap w-full h-full">
             <div class="w-full flex flex-wrap bg-gray-300">
                     @foreach (var card in Deck.Main.Take(1))
                     {
@@ -48,8 +48,8 @@ else
             </div>
         </div>
 
-        <div class="container flex flex-no-wrap w-full">
-            <div class="w-auto overflow-x-scroll">
+        <div class="flex flex-no-wrap w-full justify-end">
+            <div class="w-full overflow-x-scroll">
                 <div class="whitespace-no-wrap">
                     @foreach (var card in Deck.Main.Take(7))
                     {

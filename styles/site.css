@@ -1,0 +1,42 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import url('https://fonts.googleapis.com/css?family=Raleway|Open+Sans&display=swap');
+
+html, body {
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+}
+
+app {
+    @apply flex;
+}
+
+h1 {
+    @apply text-2xl;
+    font-family: 'Raleway', Helvetica, Arial, sans-serif;
+  }
+
+
+/* need to fix from here down!! */
+
+
+.deck {
+    padding-bottom: 18.5em;
+}
+
+.deck .card-image {
+    border-radius: 6%/4%;
+    width: 10em;
+    margin-bottom: -14.5em;
+    transition: margin 500ms;
+}
+
+.deck .card-image:not(:last-child):hover {
+    margin-bottom: 1em !important;
+}
+
+.searchresult-row {
+    display: block;
+    cursor: pointer;
+}
