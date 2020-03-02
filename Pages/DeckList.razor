@@ -1,6 +1,6 @@
 @page "/decks"
 @inject ILogger<DeckList> _logger
-@inject LocalStorage _storage
+@inject ILocalStorage _storage
 
 @if (Decks == null)
 {
@@ -24,7 +24,7 @@ else
 @functions {
     IEnumerable<Deck> Decks;
 
-    protected override async Task OnInitAsync()
+    protected override async Task OnInitializedAsync()
     {
         var decks = new List<Deck>();
         

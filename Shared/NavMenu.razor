@@ -1,11 +1,11 @@
 ﻿<div class="top-row p-4 flex flex-wrap list-reset mb-0bar navbar-dark">
     <img class="ml-2 w-20 h-auto" src="images/logoW.png" />
-    <button class="flex flex-wrap list-reset pl-0 mb-0bar-toggler" onclick=@ToggleNavMenu>
+    <button class="flex flex-wrap list-reset pl-0 mb-0bar-toggler" @onclick=ToggleNavMenu>
         <span class="flex flex-wrap list-reset pl-0 mb-0bar-toggler-icon"></span>
     </button>
 </div>
 
-<div class=@(collapseNavMenu ? "collapse" : null) onclick=@ToggleNavMenu>
+<div class=@(collapseNavMenu ? "collapse" : null) @onclick=ToggleNavMenu>
     <ul class="flex flex-wrap list-reset pl-0 mb-0 flex-column text-white">
         <li class="px-3 hover:text-purple-300">
             <NavLink class="inline-block py-2 px-4 no-underline" href="" Match=NavLinkMatch.All>
