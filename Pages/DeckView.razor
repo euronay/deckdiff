@@ -16,7 +16,7 @@ else
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Creature")))
                 {
-                    <br /><img class="card-image" src='@card.ImageUris["small"]'/>
+                    <br /><CardImage Card="@card" />
                 }
             </div>
         </div>
@@ -25,7 +25,7 @@ else
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Planeswalker")))
                 {
-                    <br /><img class="card-image" src='@card.ImageUris["small"]'/>
+                    <br /><CardImage Card="@card" />
                 }
             </div>
         </div>
@@ -34,7 +34,7 @@ else
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Instant")))
                 {
-                    <br /><img class="card-image" src='@card.ImageUris["small"]'/>
+                    <br /><CardImage Card="@card" />
                 }
             </div>
         </div>
@@ -43,7 +43,7 @@ else
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Sorcery")))
                 {
-                    <br /><img class="card-image" src='@card.ImageUris["small"]'/>
+                    <br /><CardImage Card="@card" />
                 }
             </div>
         </div>
@@ -52,7 +52,7 @@ else
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Artifact") && !c.TypeLine.Contains("Creature")))
                 {
-                    <br /><img class="card-image" src='@card.ImageUris["small"]'/>
+                    <br /><CardImage Card="@card" />
                 }
             </div>
         </div>
@@ -61,7 +61,7 @@ else
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Enchantment") && !c.TypeLine.Contains("Creature")))
                 {
-                    <br /><img class="card-image" src='@card.ImageUris["small"]'/>
+                    <br /><CardImage Card="@card" />
                 }
             </div>
         </div>
@@ -70,7 +70,7 @@ else
             <div class="deck">
                 @foreach (var card in Deck.Main.OrderBy(c => c.Name).Where(c => c.TypeLine.Contains("Land") && !c.TypeLine.Contains("Creature")))
                 {
-                    <br /><img class="card-image" src='@card.ImageUris["small"]'/>
+                   <br /><CardImage Card="@card" />
                 }
             </div>
         </div>

@@ -1,0 +1,24 @@
+
+<div class="@CardCssClass" style="background-image: url('@Image')">                           
+</div>
+
+@functions {
+    [Parameter]
+    public Card Card {get; set;}
+
+    [Parameter]
+    public string Class {get; set;} = "";
+
+    private string CardCssClass
+    {
+        get => $"card-image my-2 mx-1 {Class}";
+    }
+
+    [Parameter]
+    public bool FaceUp {get;set;} = true;
+
+    private Uri Image
+    {
+        get => (FaceUp && Card != null) ? Card.ImageUris["small"] : new Uri("images/mtg-card-back.jpg", UriKind.Relative);
+    }
+}

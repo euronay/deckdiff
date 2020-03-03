@@ -5,7 +5,7 @@
         <div class="relative flex items-stretch w-full mb-3">
             <input type="text" class="block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-grey-darker border border-grey rounded" placeholder="Search for card" bind="@SearchQuery" />
             <div class="input-group-append">
-                <button class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap py-2 px-4 rounded text-base leading-normal no-underline text-blue-dark border-blue bg-white hover:bg-blue-light hover:text-blue-darker" type="button" @onclick=Search>Search</button>
+                <button class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap py-2 px-4 rounded text-base leading-normal no-underline text-blue-dark border-blue bg-white hover:bg-blue-light hover:text-blue-darker" type="button" @onclick="Search">Search</button>
             </div>
         </div>
         @if(SearchResults != null)
@@ -15,7 +15,7 @@
                     @foreach(var card in SearchResults.OrderBy(c => c.Name))
                     {
                         <tr>
-                            <td><a class="searchresult-row" @onclick="(() => Select(card))">@card.Name</a></td>
+                            <td><a class="searchresult-row" @onclick="e => Select(card)">@card.Name</a></td>
                         </tr>
                     }
                 </tbody>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="flex flex-wrap">
                         <div class=":flex-growmd-auto">
-                            <img class="card-image" src='@SelectedCard.ImageUris["small"]'/><br />
+                            <CardImage Card="@SelectedCard" /><br />
                         </div>
                         <div class="md:w-1/2 pr-4 pl-4">
                                 <label for="printingSelect">Set</label>

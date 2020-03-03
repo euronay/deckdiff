@@ -8,6 +8,7 @@ using Blazor.Extensions.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using ScryfallApi.Client;
 using System.Net.Http;
+using Blazor.DragDrop.Core;
 
 namespace deckdiff
 {
@@ -36,6 +37,8 @@ namespace deckdiff
                 httpClient.BaseAddress = new Uri("https://api.scryfall.com/");
                 return new ScryfallApiClient(httpClient, logger, cache);
             });
+
+            builder.Services.AddBlazorDragDrop();
 
             await builder.Build().RunAsync();
         }

@@ -20,15 +20,23 @@ h1 {
 
 /* need to fix from here down!! */
 
+.card-image {
+    border-radius: 6%/4%;
+    width: 7rem;
+    height: 9.8rem;
+    background-size: cover;
+}
+
+.hand .draggable {
+    display: inline-block;
+}
 
 .deck {
-    padding-bottom: 18.5em;
+    padding-bottom: 15.5em;
 }
 
 .deck .card-image {
-    border-radius: 6%/4%;
-    width: 10em;
-    margin-bottom: -14.5em;
+    margin-bottom: -11.5em;
     transition: margin 500ms;
 }
 
@@ -39,4 +47,18 @@ h1 {
 .searchresult-row {
     display: block;
     cursor: pointer;
+}
+
+
+.dd-no-pointer-events {
+    pointer-events: none;
+}
+
+.draggable-intransit {
+    opacity: 0.2;
+}
+
+.dropzone {
+    min-height: 100%;
+    min-width: 100%;
 }

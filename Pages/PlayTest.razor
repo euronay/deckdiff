@@ -33,14 +33,14 @@ else
         
 
         <div class="mb-auto flex flex-no-wrap w-full h-full">
-            <div class="w-full flex flex-wrap bg-gray-300">
+            <Dropzone class="w-full flex flex-wrap bg-gray-300">
                     @foreach (var card in Deck.Main.Take(1))
                     {
-                        <div class="w-24 my-2 mx-1">
-                            <img class="card-image" src='@card.ImageUris["small"]'/>
-                        </div>
+                        <Draggable>
+                            <CardImage Card="@card" />
+                        </Draggable>
                     }
-            </div>
+            </Dropzone>
             <div class="w-1/5 p-2">
                 <button class="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full mb-2">Next Turn</button>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mb-2">Shuffle</button>
@@ -50,29 +50,26 @@ else
 
         <div class="flex flex-no-wrap w-full justify-end">
             <div class="w-full overflow-x-scroll">
-                <div class="whitespace-no-wrap">
+                <Dropzone class="whitespace-no-wrap hand" >
                     @foreach (var card in Deck.Main.Take(7))
                     {
-                        <div class="w-24 my-2 mx-1 inline-block">
-                            <img class="card-image" src='@card.ImageUris["small"]'/>
-                        </div>
+                        <Draggable>
+                            <CardImage Card="@card" />
+                        </Draggable>
                     }
-                </div>
+                </Dropzone>
             </div>
-            <div class="w-32">
-                <div class="w-24 my-2 mx-1">
-                    <img class="card-image" src="images/mtg-card-back.jpg"/>
-                </div>
+    
+            <div>
+                <CardImage />
             </div>
-            <div class="w-32">
-                <div class="w-24 m-2">
-                    <img class="card-image" src="images/mtg-card-back.jpg"/>
-                </div>
+
+            <div>
+                <CardImage />
             </div>
-            <div class="w-32">
-                <div class="w-24 m-2">
-                    <img class="card-image" src="images/mtg-card-back.jpg"/>
-                </div>
+
+            <div>
+                <CardImage />
             </div>
         </div>
     </div>
@@ -84,7 +81,7 @@ else
 
     [Parameter]
     public string DeckId { get; set; }
-    
+
     private Deck Deck { get; set; }
     private int Turn { get; set; } = 1;
     private int Life {get; set; } = 20;

@@ -14,5 +14,6 @@
     <PackageReference Include="Blazor.Extensions.Logging" Version="1.0.0" />
     <PackageReference Include="Blazor.Extensions.Storage" Version="1.1.0-preview3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="blazor-dragdrop" Version="1.1.4" />
   </ItemGroup>
 </Project>
