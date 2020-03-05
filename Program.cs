@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Blazor.Extensions.Logging;
 using Microsoft.Extensions.Logging;
 using Blazor.Extensions.Storage;
 using Microsoft.Extensions.Caching.Memory;
@@ -18,13 +17,6 @@ namespace deckdiff
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-
-            // Disabled until https://github.com/BlazorExtensions/Logging/issues/41
-            // builder.Services.AddLogging(builder => builder
-            //        .AddBrowserConsole()
-            //        .SetMinimumLevel(LogLevel.Trace)
-            //    );
-
 
             builder.Services.AddStorage();
 
